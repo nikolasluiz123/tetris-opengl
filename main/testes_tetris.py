@@ -1,6 +1,6 @@
 from config.configurator import Configurator
 from draw.drawer import Drawer
-from draw.shapes.shape import Square
+from draw.shapes.square import Square
 
 
 def main():
