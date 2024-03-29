@@ -1,7 +1,5 @@
 from abc import abstractmethod, ABC
 
-from OpenGL.GL import *
-
 from config.configurator import Configurator
 
 

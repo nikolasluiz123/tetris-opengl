@@ -1,5 +1,3 @@
-import pygame
-
 from config.configurator import Configurator
 from draw.drawer import Drawer
 from draw.shapes.square import Square

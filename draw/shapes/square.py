@@ -1,5 +1,6 @@
-from draw.shapes.shape import Shape
 from OpenGL.GL import *
+
+from draw.shapes.shape import Shape
 
 
 class Square(Shape):
