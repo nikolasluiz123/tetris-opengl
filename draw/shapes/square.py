@@ -23,7 +23,3 @@ class Square(Shape):
         glEnd()
 
         glPopMatrix()
-
-    def rotate(self, clockwise=True):
-        rotation_angle = 5 if clockwise else -5
-        self.angle += rotation_angle

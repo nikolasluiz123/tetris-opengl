@@ -39,6 +39,6 @@ class Shape(ABC):
 
         pass
 
-    @abstractmethod
     def rotate(self, clockwise=True):
-        pass
+        rotation_angle = 5 if clockwise else -5
+        self.angle += rotation_angle
