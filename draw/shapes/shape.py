@@ -29,6 +29,7 @@ class Shape(ABC):
         self.speed_movimentation_x = 0
         self.shape_width = shape_width
         self.shape_height = shape_height
+        self.angle = 0
 
     @abstractmethod
     def draw(self):
@@ -36,4 +37,8 @@ class Shape(ABC):
             Função responsável por desenhar a forma.
         """
 
+        pass
+
+    @abstractmethod
+    def rotate(self, clockwise=True):
         pass

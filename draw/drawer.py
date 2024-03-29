@@ -23,6 +23,8 @@ class Drawer:
         self.configurator = configurator
         self.shape = shape
         self.clock = pygame.time.Clock()
+        self.rotate_clockwise = False
+        self.rotate_counter_clockwise = False
 
     def start_object_movimentation(self):
         """
@@ -49,17 +51,17 @@ class Drawer:
 
     def execute_actions_on_events(self):
         """
-            Função responsável por tratar os eventos do jogo.
+        Função responsável por tratar os eventos do jogo.
 
-            Eventos:
-                **QUIT** Quando o usuário fecha o jogo. Isso é necessário para que o processo do jogo não trave e que
-                os recursos sejam liberados ao final do processo.
+        Eventos:
+            **QUIT** Quando o usuário fecha o jogo. Isso é necessário para que o processo do jogo não trave e que
+            os recursos sejam liberados ao final do processo.
 
-                **KEYDOWN** Quando o usuário aperta uma tecla. Pode ser usado para tratar a movimentação no eixo X do
-                objeto.
+            **KEYDOWN** Quando o usuário aperta uma tecla. Pode ser usado para tratar a movimentação no eixo X do
+            objeto.
 
-                **KEYUP** Quando o usuário solta uma tecla. Pode ser usado para parar a movimentação no eixo X do
-                objeto.
+            **KEYUP** Quando o usuário solta uma tecla. Pode ser usado para parar a movimentação no eixo X do
+            objeto.
         """
 
         for event in pygame.event.get():
@@ -68,9 +70,35 @@ class Drawer:
                 quit()
             elif event.type == KEYDOWN:
                 self.move_object_on_x_axis(event)
+                self.start_rotation(event)
             elif event.type == KEYUP:
                 self.stop_object_movimentation_on_x_axis(event)
+                self.stop_rotation(event)
 
+    def start_rotation(self, event):
+        """
+        Função responsável por iniciar a rotação do objeto.
+
+        :param event: Evento realizado pelo usuário
+        """
+
+        if event.key == K_w:
+            self.rotate_clockwise = True
+        elif event.key == K_s:
+            self.rotate_counter_clockwise = True
+
+    def stop_rotation(self, event):
+        """
+        Função responsável por parar a rotação do objeto.
+
+        :param event: Evento realizado pelo usuário
+        """
+
+        if event.key == K_w:
+            self.rotate_clockwise = False
+        elif event.key == K_s:
+            self.rotate_counter_clockwise = False
+            
     def move_object_on_x_axis(self, event):
         """
             Função responsável por mover o objeto no eixo X,
@@ -111,6 +139,11 @@ class Drawer:
 
         self.shape.position_x += self.shape.speed_movimentation_x * 5
         self.shape.position_y += self.shape.speed_movimentation_y * 5
+
+        if self.rotate_clockwise:
+            self.shape.rotate(clockwise=True)
+        elif self.rotate_counter_clockwise:
+            self.shape.rotate(clockwise=False)
 
         self.define_screen_limits_on_x_axis()
 

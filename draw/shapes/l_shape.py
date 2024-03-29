@@ -49,3 +49,6 @@ class LShape(Shape):
         glVertex2f(self.position_x, self.position_y + self.shape_height + self.shape_height_2)
 
         glEnd()
+
+    def rotate(self, clockwise=True):
+        pass
