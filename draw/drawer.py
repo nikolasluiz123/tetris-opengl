@@ -35,18 +35,17 @@ class Drawer:
                     if event.key == K_LEFT or event.key == K_RIGHT:
                         self.shape.speed_movimentation_x = 0
 
-            # Atualização da posição
-            self.shape.position_x += self.shape.speed_movimentation_x * 5
-            self.shape.position_y += self.shape.speed_movimentation_y * 5
+            if self.shape.position_y > 0:
+                # Atualização da posição
+                self.shape.position_x += self.shape.speed_movimentation_x * 5
+                self.shape.position_y += self.shape.speed_movimentation_y * 5
 
-            # Limites da tela
-            if self.shape.position_x < 0:
-                self.shape.position_x = 0
-            elif self.shape.position_x + self.shape.size > self.configurator.screen_width:
-                self.shape.position_x = self.configurator.screen_width - self.shape.size
-
-            # Verificação se atingiu o chão
-            if self.shape.position_y < 0:
+                # Limites da tela
+                if self.shape.position_x < 0:
+                    self.shape.position_x = 0
+                elif self.shape.position_x + self.shape.size > self.configurator.screen_width:
+                    self.shape.position_x = self.configurator.screen_width - self.shape.size
+            else:
                 self.shape.position_y = 0
                 self.shape.speed_movimentation_y = 0
 
