@@ -19,7 +19,8 @@ class Shape(ABC):
 
             :param configurator: Classe de configuração do jogo
             :param speed_movimentation_y: Velocidade que o objeto deverá se movimentar no eixo Y
-            :param size: Tamanho do objeto
+            :param shape_width: Largura da forma
+            :param shape_height: Altura da forma
         """
 
         self.position_x = configurator.screen_width // 2
