@@ -1,6 +1,7 @@
 import pygame
+from OpenGL.GL import *
 
-from shapes.shape import Shape
+from draw.shapes.shape import Shape
 
 
 class Drawer:
@@ -12,13 +13,15 @@ class Drawer:
     def __init__(self, shape: Shape):
         self.shape = shape
 
-    def start_draw(self):
+    def start_draw_to_bottom(self):
         """
             Função que realiza chamadas para desenhar a forma
             a cada 10 milisegundos
         """
 
-        while True:
+        clock = pygame.time.Clock()
+
+        while self.shape.initial_position_y > self.shape.MIN_Y_POSITION:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -27,4 +30,4 @@ class Drawer:
             self.shape.update_position_y()
 
             pygame.display.flip()
-            pygame.time.wait(10)
+            clock.tick(60)

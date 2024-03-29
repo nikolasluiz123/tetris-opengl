@@ -1,3 +1,5 @@
+import pygame
+
 from config.configurator import Configurator
 from draw.drawer import Drawer
 from draw.shapes.square import Square
@@ -9,7 +11,7 @@ def main():
     configurator.configure_perspective()
 
     drawer = Drawer(Square())
-    drawer.start_draw()
+    drawer.start_draw_to_bottom()
 
 
 if __name__ == "__main__":
