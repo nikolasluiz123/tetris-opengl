@@ -24,7 +24,7 @@ class Shape(ABC):
         """
 
         self.position_x = configurator.screen_width // 2
-        self.position_y = configurator.screen_height + 50
+        self.position_y = configurator.screen_height + shape_height
         self.speed_movimentation_y = speed_movimentation_y
         self.speed_movimentation_x = 0
         self.shape_width = shape_width
