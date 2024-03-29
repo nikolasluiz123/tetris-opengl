@@ -3,6 +3,9 @@ from OpenGL.GL import *
 
 
 class Square(Shape):
+    """
+        Classe que representa um quadrado.
+    """
 
     def draw(self):
         glColor3f(1.0, 1.0, 1.0)
