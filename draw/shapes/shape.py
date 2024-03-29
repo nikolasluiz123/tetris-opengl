@@ -9,7 +9,11 @@ class Shape(ABC):
         encaixada.
     """
 
-    def __init__(self, configurator: Configurator, speed_movimentation_y: float, size: float):
+    def __init__(self,
+                 configurator: Configurator,
+                 speed_movimentation_y: float,
+                 shape_width: float,
+                 shape_height: float):
         """
             Construtor com os parâmetros da forma.
 
@@ -22,7 +26,8 @@ class Shape(ABC):
         self.position_y = configurator.screen_height + 50
         self.speed_movimentation_y = speed_movimentation_y
         self.speed_movimentation_x = 0
-        self.size = size
+        self.shape_width = shape_width
+        self.shape_height = shape_height
 
     @abstractmethod
     def draw(self):

@@ -122,5 +122,5 @@ class Drawer:
 
         if self.shape.position_x < 0:
             self.shape.position_x = 0
-        elif self.shape.position_x + self.shape.size > self.configurator.screen_width:
-            self.shape.position_x = self.configurator.screen_width - self.shape.size
+        elif self.shape.position_x + self.shape.shape_width > self.configurator.screen_width:
+            self.shape.position_x = self.configurator.screen_width - self.shape.shape_width

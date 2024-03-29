@@ -3,9 +3,9 @@ from OpenGL.GL import *
 from draw.shapes.shape import Shape
 
 
-class Square(Shape):
+class Rectangle(Shape):
     """
-        Classe que representa um quadrado.
+        Classe que representa um retângulo.
     """
 
     def draw(self):
