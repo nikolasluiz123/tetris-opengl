@@ -1,7 +1,5 @@
 from abc import abstractmethod, ABC
 
-from config.configurator import Configurator
-
 
 class Shape(ABC):
     """
@@ -10,7 +8,7 @@ class Shape(ABC):
     """
 
     def __init__(self,
-                 configurator: Configurator,
+                 configurator,
                  speed_movimentation_y: float,
                  shape_width: float,
                  shape_height: float):
@@ -30,6 +28,7 @@ class Shape(ABC):
         self.shape_width = shape_width
         self.shape_height = shape_height
         self.angle = 0
+        self.locked = False
 
     @abstractmethod
     def draw(self):

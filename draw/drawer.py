@@ -3,7 +3,6 @@ from OpenGL.GL import *
 from pygame.locals import *
 
 from config.configurator import Configurator
-from draw.shapes.shape import Shape
 
 
 class Drawer:
@@ -12,7 +11,7 @@ class Drawer:
         dos objetos.
     """
 
-    def __init__(self, configurator: Configurator, shape: Shape):
+    def __init__(self, configurator: Configurator):
         """
             Construtor para passagem dos parâmetros
 
@@ -21,35 +20,36 @@ class Drawer:
         """
 
         self.configurator = configurator
-        self.shape = shape
         self.clock = pygame.time.Clock()
         self.rotate_clockwise = False
         self.rotate_counter_clockwise = False
 
-    def start_object_movimentation(self):
+    def start_objects_movimentation(self):
         """
             Função principal que realiza a movimentação do objeto
             no eixo Y e permite que o usuário movimente-se no eixo
             X usando as setas.
         """
 
-        while True:
-            glClear(GL_COLOR_BUFFER_BIT)
+        for shape in self.configurator.shapes:
+            while not shape.locked:
+                glClear(GL_COLOR_BUFFER_BIT)
 
-            self.execute_actions_on_events()
+                self.execute_actions_on_events(shape)
 
-            if self.shape.position_y > 0:
-                self.update_object_positions()
-            else:
-                self.shape.position_y = 0
-                self.shape.speed_movimentation_y = 0
+                if shape.position_y > 0:
+                    self.update_object_positions(shape)
+                else:
+                    # shape.position_y = 0
+                    shape.speed_movimentation_y = 0
+                    shape.locked = True
 
-            self.shape.draw()
+                shape.draw()
 
-            pygame.display.flip()
-            self.clock.tick(60)
+                pygame.display.flip()
+                self.clock.tick(60)
 
-    def execute_actions_on_events(self):
+    def execute_actions_on_events(self, shape):
         """
         Função responsável por tratar os eventos do jogo.
 
@@ -69,10 +69,10 @@ class Drawer:
                 pygame.quit()
                 quit()
             elif event.type == KEYDOWN:
-                self.move_object_on_x_axis(event)
+                self.move_object_on_x_axis(event, shape)
                 self.start_rotation(event)
             elif event.type == KEYUP:
-                self.stop_object_movimentation_on_x_axis(event)
+                self.stop_object_movimentation_on_x_axis(event, shape)
                 self.stop_rotation(event)
 
     def start_rotation(self, event):
@@ -98,8 +98,8 @@ class Drawer:
             self.rotate_clockwise = False
         elif event.key == K_s:
             self.rotate_counter_clockwise = False
-            
-    def move_object_on_x_axis(self, event):
+
+    def move_object_on_x_axis(self, event, shape):
         """
             Função responsável por mover o objeto no eixo X,
             tanto para esquerda como para a direita dependendo da tecla
@@ -111,49 +111,51 @@ class Drawer:
             Se a tecla precionada for a seta direita, a velocidade de movimentação
             do objeto precisa ser positiva.
 
+            :param shape: Shape que foi gerado
             :param event: Evento realizado pelo usuário
         """
 
         if event.key == K_LEFT:
-            self.shape.speed_movimentation_x = -1
+            shape.speed_movimentation_x = -1
         elif event.key == K_RIGHT:
-            self.shape.speed_movimentation_x = 1
+            shape.speed_movimentation_x = 1
 
-    def stop_object_movimentation_on_x_axis(self, event):
+    def stop_object_movimentation_on_x_axis(self, event, shape):
         """
             Função responsável por zerar a velocidade do objeto no eixo X
             caso seja necessário.
 
+            :param shape: Shape que foi gerado
             :param event: Evento realizado pelo usuário
         """
 
         if event.key == K_LEFT or event.key == K_RIGHT:
-            self.shape.speed_movimentation_x = 0
+            shape.speed_movimentation_x = 0
 
-    def update_object_positions(self):
+    def update_object_positions(self, shape):
         """
             Função responsável por atualizar a posição X e Y baseado na velocidade definida
             no Objeto. É usado um multiplicador para aumentar um pouco a velocidade, isso pode
             ser definido dinamicamente no futuro.
         """
 
-        self.shape.position_x += self.shape.speed_movimentation_x * 5
-        self.shape.position_y += self.shape.speed_movimentation_y * 5
+        shape.position_x += shape.speed_movimentation_x * 5
+        shape.position_y += shape.speed_movimentation_y * 5
 
         if self.rotate_clockwise:
-            self.shape.rotate(clockwise=True)
+            shape.rotate(clockwise=True)
         elif self.rotate_counter_clockwise:
-            self.shape.rotate(clockwise=False)
+            shape.rotate(clockwise=False)
 
-        self.define_screen_limits_on_x_axis()
+        self.define_screen_limits_on_x_axis(shape)
 
-    def define_screen_limits_on_x_axis(self):
+    def define_screen_limits_on_x_axis(self, shape):
         """
             Função que define até onde o objeto pode se movimentar no eixo X,
             isso garante que o objeto não saia da tela.
         """
 
-        if self.shape.position_x < 0:
-            self.shape.position_x = 0
-        elif self.shape.position_x + self.shape.shape_width > self.configurator.screen_width:
-            self.shape.position_x = self.configurator.screen_width - self.shape.shape_width
+        if shape.position_x < 0:
+            shape.position_x = 0
+        elif shape.position_x + shape.shape_width > self.configurator.screen_width:
+            shape.position_x = self.configurator.screen_width - shape.shape_width
