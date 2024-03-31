@@ -3,6 +3,7 @@ from OpenGL.GL import *
 from pygame.locals import *
 
 from config.configurator import Configurator
+from draw.shapes.shape import Shape
 
 
 class Drawer:
@@ -23,6 +24,7 @@ class Drawer:
         self.clock = pygame.time.Clock()
         self.rotate_clockwise = False
         self.rotate_counter_clockwise = False
+        self.locked_shapes = []
 
     def start_objects_movimentation(self):
         """
@@ -40,11 +42,13 @@ class Drawer:
                 if shape.position_y > 0:
                     self.update_object_positions(shape)
                 else:
-                    # shape.position_y = 0
-                    shape.speed_movimentation_y = 0
                     shape.locked = True
+                    self.locked_shapes.append(shape)
 
                 shape.draw()
+
+                for locked_shape in self.locked_shapes:
+                    locked_shape.draw()
 
                 pygame.display.flip()
                 self.clock.tick(60)
