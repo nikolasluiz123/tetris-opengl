@@ -24,7 +24,7 @@ class Drawer:
         self.clock = pygame.time.Clock()
         self.rotate_clockwise = False
         self.rotate_counter_clockwise = False
-        self.locked_shapes = []
+        self.__locked_shapes = []
 
     def start_objects_movimentation(self):
         """
@@ -43,11 +43,11 @@ class Drawer:
                     self.update_object_positions(shape)
                 else:
                     shape.locked = True
-                    self.locked_shapes.append(shape)
+                    self.__locked_shapes.append(shape)
 
                 shape.draw()
 
-                for locked_shape in self.locked_shapes:
+                for locked_shape in self.__locked_shapes:
                     locked_shape.draw()
 
                 pygame.display.flip()

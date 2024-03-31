@@ -37,6 +37,11 @@ class Configurator:
         gluOrtho2D(0, self.screen_width, 0, self.screen_height)
 
     def configure_shape_list(self):
+        """
+            Função para inicializar a lista de shapes com uma quantidade
+            específica de cada um. A lista é embaralhada para tentar trazer
+            uma aleatoriedade nas peças que cairão.
+        """
         speed_movimentation_y = -0.3
 
         self.__generate_shapes_rectangle(speed_movimentation_y)
@@ -46,6 +51,11 @@ class Configurator:
         random.shuffle(self.shapes)
 
     def __generate_shapes_rectangle(self, speed_movimentation_y):
+        """
+            Função parar gerar peças de retângulo
+
+            :param speed_movimentation_y: Velocidade de queda
+        """
         for i in range(20):
             random_rectangle_width = random.randint(50, 100)
             random_rectangle_height = random.randint(5, 15)
@@ -58,6 +68,12 @@ class Configurator:
             self.shapes.append(shape)
 
     def __generate_shapes_square(self, speed_movimentation_y):
+        """
+            Função parar gerar peças de quadrado
+
+            :param speed_movimentation_y: Velocidade de queda
+        """
+
         for i in range(20):
             random_square_size = random.randint(20, 45)
 
@@ -69,6 +85,12 @@ class Configurator:
             self.shapes.append(shape)
 
     def __generate_shapes_l_shape(self, speed_movimentation_y):
+        """
+            Função parar gerar peças de L
+
+            :param speed_movimentation_y: Velocidade de queda
+        """
+
         for i in range(20):
             random_l_shape_width = random.randint(25, 50)
             random_l_shape_height = random.randint(15, 30)
