@@ -1,3 +1,6 @@
+import sys
+
+import numpy as np
 import pygame
 from OpenGL.GL import *
 from pygame.locals import *
@@ -44,6 +47,8 @@ class Drawer:
                 else:
                     shape.locked = True
                     self.__locked_shapes.append(shape)
+                    self.configurator.put_shape_in_game_matrix(shape)
+                    self.configurator.delete_completed_matrix_lines()
 
                 shape.draw()
 
@@ -52,6 +57,8 @@ class Drawer:
 
                 pygame.display.flip()
                 self.clock.tick(60)
+
+        print(self.configurator.game_matrix)
 
     def execute_actions_on_events(self, shape):
         """

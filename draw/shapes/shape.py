@@ -1,5 +1,7 @@
 from abc import abstractmethod, ABC
 
+import numpy as np
+
 
 class Shape(ABC):
     """
@@ -10,8 +12,8 @@ class Shape(ABC):
     def __init__(self,
                  configurator,
                  speed_movimentation_y: float,
-                 shape_width: float,
-                 shape_height: float):
+                 shape_width: int,
+                 shape_height: int):
         """
             Construtor com os parâmetros da forma.
 
@@ -41,3 +43,9 @@ class Shape(ABC):
     def rotate(self, clockwise=True):
         rotation_angle = 5 if clockwise else -5
         self.angle += rotation_angle
+
+    def to_matrix(self):
+        """
+            Retorna uma matriz representando o shape.
+        """
+        return np.ones((self.shape_height, self.shape_width), dtype=int)

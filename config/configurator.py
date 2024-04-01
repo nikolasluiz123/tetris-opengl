@@ -1,5 +1,6 @@
 import random
 
+import numpy as np
 import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -15,7 +16,13 @@ class Configurator:
         Classe de configuração do jogo
     """
 
-    def __init__(self, screen_width: float, screen_height: float):
+    GAME_MATRIX_AXIS_LINE_DIMENSION = 0
+    """
+        Constante que representa a dimensão de linha
+        de uma matriz.
+    """
+
+    def __init__(self, screen_width: int, screen_height: int):
         """
             Construtor da classe de configuração
 
@@ -24,7 +31,9 @@ class Configurator:
         """
         self.screen_width = screen_width
         self.screen_height = screen_height
+
         self.shapes = []
+        self.game_matrix = np.zeros((screen_height, screen_width), dtype=int)
 
     def configure_display_mode(self):
         """
@@ -101,3 +110,29 @@ class Configurator:
                            shape_height=random_l_shape_height)
 
             self.shapes.append(shape)
+
+    def delete_completed_matrix_lines(self):
+        lines_to_delete = self.__check_game_matrix_lines()
+
+        if len(lines_to_delete) > 0:
+            for line_number in lines_to_delete:
+                self.game_matrix = np.delete(self.game_matrix, line_number, axis=self.GAME_MATRIX_AXIS_LINE_DIMENSION)
+                new_line = np.zeros((1, self.screen_width), dtype=int)
+                self.game_matrix = np.concatenate((new_line, self.game_matrix),
+                                                  axis=self.GAME_MATRIX_AXIS_LINE_DIMENSION)
+
+    def __check_game_matrix_lines(self) -> list[int]:
+        return [i for i, line in enumerate(self.game_matrix) if self.__is_line_complete(line)]
+
+    def __is_line_complete(self, line):
+        return all(line)
+
+    def put_shape_in_game_matrix(self, shape):
+        """
+            Coloca o shape dentro da matriz do jogo.
+        """
+        shape_matrix = shape.to_matrix()
+
+        for y in range(shape_matrix.shape[0]):
+            for x in range(shape_matrix.shape[1]):
+                self.game_matrix[int(shape.position_y) + y, int(shape.position_x) + x] += shape_matrix[y, x]
