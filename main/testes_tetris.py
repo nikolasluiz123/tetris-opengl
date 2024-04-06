@@ -3,7 +3,7 @@ from draw.drawer import Drawer
 
 
 def main():
-    configurator = Configurator(screen_width=400, screen_height=800)
+    configurator = Configurator(screen_width=30, screen_height=80)
     configurator.configure_display_mode()
     configurator.configure_shape_list()
 

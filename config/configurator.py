@@ -54,11 +54,11 @@ class Configurator:
         """
         speed_movimentation_y = -1
 
-        # self.__generate_shapes_rectangle(speed_movimentation_y)
         self.__generate_shapes_square(speed_movimentation_y)
+        # self.__generate_shapes_rectangle(speed_movimentation_y)
         # self.__generate_shapes_l_shape(speed_movimentation_y)
 
-        random.shuffle(self.shapes)
+        # random.shuffle(self.shapes)
 
     def __generate_shapes_rectangle(self, speed_movimentation_y):
         """
@@ -66,14 +66,14 @@ class Configurator:
 
             :param speed_movimentation_y: Velocidade de queda
         """
-        for i in range(20):
-            random_rectangle_width = random.randint(50, 100)
-            random_rectangle_height = random.randint(5, 15)
+        for i in range(1):
+            # random_rectangle_width = random.randint(50, 100)
+            # random_rectangle_height = random.randint(5, 15)
 
             shape = Rectangle(configurator=self,
                               speed_movimentation_y=speed_movimentation_y,
-                              shape_width=random_rectangle_width,
-                              shape_height=random_rectangle_height)
+                              shape_width=12,
+                              shape_height=2)
 
             self.shapes.append(shape)
 
@@ -84,13 +84,13 @@ class Configurator:
             :param speed_movimentation_y: Velocidade de queda
         """
 
-        for i in range(20):
+        for i in range(1):
             # random_square_size = random.randint(20, 45)
 
             shape = Square(configurator=self,
                            speed_movimentation_y=speed_movimentation_y,
-                           shape_width=20,
-                           shape_height=20)
+                           shape_width=4,
+                           shape_height=4)
 
             self.shapes.append(shape)
 
@@ -138,10 +138,10 @@ class Configurator:
 
         for y in range(shape_matrix.shape[0]):
             for x in range(shape_matrix.shape[1]):
-                game_matrix_x = int_shape_x - x
-
-                if game_matrix_x < 0:
-                    game_matrix_x = game_matrix_x * (-1)
+                if int_shape_x == (self.game_matrix.shape[1] - 1):
+                    game_matrix_x = int_shape_x - x
+                else:
+                    game_matrix_x = int_shape_x + x
 
                 game_matrix_y = int_shape_y - y
 

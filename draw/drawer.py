@@ -56,8 +56,6 @@ class Drawer:
                 pygame.display.flip()
                 self.clock.tick(60)
 
-        print(self.configurator.game_matrix)
-
     def execute_actions_on_events(self, shape):
         """
         Função responsável por tratar os eventos do jogo.
