@@ -1,12 +1,10 @@
-import sys
+import time
 
-import numpy as np
 import pygame
 from OpenGL.GL import *
 from pygame.locals import *
 
 from config.configurator import Configurator
-from draw.shapes.shape import Shape
 
 
 class Drawer:
@@ -42,7 +40,7 @@ class Drawer:
 
                 self.execute_actions_on_events(shape)
 
-                if shape.position_y > 0:
+                if self.configurator.shape_fits_game_matrix(shape):
                     self.update_object_positions(shape)
                 else:
                     shape.locked = True
@@ -149,9 +147,9 @@ class Drawer:
             no Objeto. É usado um multiplicador para aumentar um pouco a velocidade, isso pode
             ser definido dinamicamente no futuro.
         """
-
-        shape.position_x += shape.speed_movimentation_x * 5
-        shape.position_y += shape.speed_movimentation_y * 5
+        time.sleep(0.01)
+        shape.position_x += shape.speed_movimentation_x
+        shape.position_y += shape.speed_movimentation_y
 
         if self.rotate_clockwise:
             shape.rotate(clockwise=True)

@@ -1,4 +1,5 @@
 import random
+import sys
 
 import numpy as np
 import pygame
@@ -51,11 +52,11 @@ class Configurator:
             específica de cada um. A lista é embaralhada para tentar trazer
             uma aleatoriedade nas peças que cairão.
         """
-        speed_movimentation_y = -0.3
+        speed_movimentation_y = -1
 
-        self.__generate_shapes_rectangle(speed_movimentation_y)
+        # self.__generate_shapes_rectangle(speed_movimentation_y)
         self.__generate_shapes_square(speed_movimentation_y)
-        self.__generate_shapes_l_shape(speed_movimentation_y)
+        # self.__generate_shapes_l_shape(speed_movimentation_y)
 
         random.shuffle(self.shapes)
 
@@ -84,12 +85,12 @@ class Configurator:
         """
 
         for i in range(20):
-            random_square_size = random.randint(20, 45)
+            # random_square_size = random.randint(20, 45)
 
             shape = Square(configurator=self,
                            speed_movimentation_y=speed_movimentation_y,
-                           shape_width=random_square_size,
-                           shape_height=random_square_size)
+                           shape_width=20,
+                           shape_height=20)
 
             self.shapes.append(shape)
 
@@ -132,7 +133,47 @@ class Configurator:
             Coloca o shape dentro da matriz do jogo.
         """
         shape_matrix = shape.to_matrix()
+        int_shape_x = self.__get_shape_position_x_to_matrix(shape)
+        int_shape_y = self.__get_shape_position_y_to_matrix(shape) - 1
 
         for y in range(shape_matrix.shape[0]):
             for x in range(shape_matrix.shape[1]):
-                self.game_matrix[int(shape.position_y) + y, int(shape.position_x) + x] += shape_matrix[y, x]
+                game_matrix_x = int_shape_x - x
+
+                if game_matrix_x < 0:
+                    game_matrix_x = game_matrix_x * (-1)
+
+                game_matrix_y = int_shape_y - y
+
+                self.game_matrix[game_matrix_y][game_matrix_x] = shape_matrix[y, x]
+
+    def shape_fits_game_matrix(self, shape):
+        shape_matrix = shape.to_matrix()
+        int_shape_x = self.__get_shape_position_x_to_matrix(shape)
+        int_shape_y = self.__get_shape_position_y_to_matrix(shape)
+
+        for y in range(shape_matrix.shape[0] - 1):
+            for x in range(shape_matrix.shape[1] - 1):
+                if int_shape_y == self.game_matrix.shape[0]:
+                    return False
+
+                position_value = self.game_matrix[int_shape_y][int_shape_x] + shape_matrix[y, x]
+
+                if position_value == 2 or shape.position_y <= 0:
+                    return False
+
+        return True
+
+    def __get_shape_position_y_to_matrix(self, shape) -> int:
+        max_game_matrix_position_y = self.game_matrix.shape[0] - 1
+        shape_position_y = shape.position_y - 1
+
+        return max_game_matrix_position_y - shape_position_y
+
+    def __get_shape_position_x_to_matrix(self, shape) -> int:
+        int_shape_x = int(shape.position_x)
+
+        if (int_shape_x + shape.shape_width) == self.game_matrix.shape[1]:
+            int_shape_x = self.game_matrix.shape[1] - 1
+
+        return int_shape_x
