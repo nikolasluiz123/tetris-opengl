@@ -145,7 +145,7 @@ class Drawer:
             no Objeto. É usado um multiplicador para aumentar um pouco a velocidade, isso pode
             ser definido dinamicamente no futuro.
         """
-        time.sleep(0.01)
+        time.sleep(0.1)
         shape.position_x += shape.speed_movimentation_x
         shape.position_y += shape.speed_movimentation_y
 

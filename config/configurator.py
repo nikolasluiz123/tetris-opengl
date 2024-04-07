@@ -9,6 +9,7 @@ from pygame.locals import *
 
 from draw.shapes.l_shape import LShape
 from draw.shapes.rectangle import Rectangle
+from draw.shapes.shape import Shape
 from draw.shapes.square import Square
 
 
@@ -54,9 +55,9 @@ class Configurator:
         """
         speed_movimentation_y = -1
 
-        self.__generate_shapes_square(speed_movimentation_y)
         # self.__generate_shapes_rectangle(speed_movimentation_y)
-        # self.__generate_shapes_l_shape(speed_movimentation_y)
+        self.__generate_shapes_l_shape(speed_movimentation_y)
+        # self.__generate_shapes_square(speed_movimentation_y)
 
         # random.shuffle(self.shapes)
 
@@ -85,8 +86,6 @@ class Configurator:
         """
 
         for i in range(1):
-            # random_square_size = random.randint(20, 45)
-
             shape = Square(configurator=self,
                            speed_movimentation_y=speed_movimentation_y,
                            shape_width=4,
@@ -101,14 +100,11 @@ class Configurator:
             :param speed_movimentation_y: Velocidade de queda
         """
 
-        for i in range(20):
-            random_l_shape_width = random.randint(25, 50)
-            random_l_shape_height = random.randint(15, 30)
-
+        for i in range(1):
             shape = LShape(configurator=self,
                            speed_movimentation_y=speed_movimentation_y,
-                           shape_width=random_l_shape_width,
-                           shape_height=random_l_shape_height)
+                           shape_width=5,
+                           shape_height=3)
 
             self.shapes.append(shape)
 
@@ -133,8 +129,12 @@ class Configurator:
             Coloca o shape dentro da matriz do jogo.
         """
         shape_matrix = shape.to_matrix()
+
         int_shape_x = self.__get_shape_position_x_to_matrix(shape)
-        int_shape_y = self.__get_shape_position_y_to_matrix(shape) - 1
+        if int_shape_x > 0:
+            int_shape_x = int_shape_x - (shape_matrix.shape[1] - 1)
+
+        int_shape_y = self.__get_shape_position_y_to_matrix(shape) - shape_matrix.shape[0]
 
         for y in range(shape_matrix.shape[0]):
             for x in range(shape_matrix.shape[1]):
@@ -143,9 +143,17 @@ class Configurator:
                 else:
                     game_matrix_x = int_shape_x + x
 
-                game_matrix_y = int_shape_y - y
+                game_matrix_y = int_shape_y + y
 
-                self.game_matrix[game_matrix_y][game_matrix_x] = shape_matrix[y, x]
+                print(f'game_matrix_x = {game_matrix_x} game_matrix_y = {game_matrix_y}')
+                print(f'x = {x} y = {y}')
+
+                if shape_matrix[y, x] == 1:
+                    self.game_matrix[game_matrix_y][game_matrix_x] = shape_matrix[y, x]
+
+        with np.printoptions(threshold=sys.maxsize):
+            print(shape_matrix)
+            print(self.game_matrix)
 
     def shape_fits_game_matrix(self, shape):
         shape_matrix = shape.to_matrix()
@@ -164,7 +172,7 @@ class Configurator:
 
         return True
 
-    def __get_shape_position_y_to_matrix(self, shape) -> int:
+    def __get_shape_position_y_to_matrix(self, shape: Shape) -> int:
         max_game_matrix_position_y = self.game_matrix.shape[0] - 1
         shape_position_y = shape.position_y - 1
 
