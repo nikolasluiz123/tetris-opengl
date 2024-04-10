@@ -1,3 +1,4 @@
+import numpy as np
 from OpenGL.GL import *
 
 from draw.shapes.shape import Shape
@@ -7,6 +8,12 @@ class Square(Shape):
     """
         Classe que representa um quadrado.
     """
+
+    def __init__(self, configurator, speed_movimentation_y: float):
+        super().__init__(configurator,
+                         speed_movimentation_y,
+                         int(configurator.screen_width * 0.1),
+                         int(configurator.screen_height * 0.05))
 
     def draw(self):
         glPushMatrix()
@@ -23,3 +30,10 @@ class Square(Shape):
         glEnd()
 
         glPopMatrix()
+
+    def to_matrix(self):
+        """
+            Essa função cria uma matriz com 1 para representar o quadrado,
+            sendo a ordem dessa matriz baseado nas proporções do shape.
+        """
+        return np.ones((self.shape_height, self.shape_width), dtype=int)

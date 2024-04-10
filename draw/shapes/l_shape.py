@@ -1,5 +1,3 @@
-import sys
-
 import numpy as np
 from OpenGL.GL import *
 
@@ -10,6 +8,12 @@ class LShape(Shape):
     """
         Classe que representa uma forma em L
     """
+
+    def __init__(self, configurator, speed_movimentation_y: float):
+        super().__init__(configurator,
+                         speed_movimentation_y,
+                         int(configurator.screen_width * 0.12),
+                         int(configurator.screen_height * 0.04))
 
     def draw(self):
         glPushMatrix()
@@ -39,6 +43,18 @@ class LShape(Shape):
         glPopMatrix()
 
     def to_matrix(self):
+        """
+            Essa função gera uma matriz para representar o Shape em L.
+
+            Essa peça não é totalmente preenchida então a ordem da matriz
+            é baseada na altura da parte maior (para as linhas da matriz) e
+            na largura da parte menor (para as colunas da matriz.
+
+            Depois de criar essa matriz base são criadas duas matrizes com números 1
+            para representar os dois retângulos que fazem parte do shape L. Por fim,
+            basta posicionar na matriz de números 0 cada uma dessas matrizes criadas
+            e formar o L.
+        """
         width_big_part = self.shape_width // 5
         height_big_part = self.shape_height * 2
 

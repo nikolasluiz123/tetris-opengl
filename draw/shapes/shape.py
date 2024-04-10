@@ -1,7 +1,5 @@
 from abc import abstractmethod, ABC
 
-import numpy as np
-
 
 class Shape(ABC):
     """
@@ -44,8 +42,6 @@ class Shape(ABC):
         rotation_angle = 5 if clockwise else -5
         self.angle += rotation_angle
 
+    @abstractmethod
     def to_matrix(self):
-        """
-            Retorna uma matriz representando o shape.
-        """
-        return np.ones((self.shape_height, self.shape_width), dtype=int)
+        pass

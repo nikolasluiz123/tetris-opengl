@@ -1,5 +1,4 @@
 import random
-import sys
 
 import numpy as np
 import pygame
@@ -56,10 +55,10 @@ class Configurator:
         speed_movimentation_y = -1
 
         self.__generate_shapes_square(speed_movimentation_y)
-        # self.__generate_shapes_rectangle(speed_movimentation_y)
+        self.__generate_shapes_rectangle(speed_movimentation_y)
         self.__generate_shapes_l_shape(speed_movimentation_y)
 
-        # random.shuffle(self.shapes)
+        random.shuffle(self.shapes)
 
     def __generate_shapes_rectangle(self, speed_movimentation_y):
         """
@@ -67,15 +66,8 @@ class Configurator:
 
             :param speed_movimentation_y: Velocidade de queda
         """
-        for i in range(1):
-            # random_rectangle_width = random.randint(50, 100)
-            # random_rectangle_height = random.randint(5, 15)
-
-            shape = Rectangle(configurator=self,
-                              speed_movimentation_y=speed_movimentation_y,
-                              shape_width=12,
-                              shape_height=2)
-
+        for i in range(10):
+            shape = Rectangle(configurator=self, speed_movimentation_y=speed_movimentation_y)
             self.shapes.append(shape)
 
     def __generate_shapes_square(self, speed_movimentation_y):
@@ -85,12 +77,8 @@ class Configurator:
             :param speed_movimentation_y: Velocidade de queda
         """
 
-        for i in range(1):
-            shape = Square(configurator=self,
-                           speed_movimentation_y=speed_movimentation_y,
-                           shape_width=4,
-                           shape_height=4)
-
+        for i in range(10):
+            shape = Square(configurator=self, speed_movimentation_y=speed_movimentation_y)
             self.shapes.append(shape)
 
     def __generate_shapes_l_shape(self, speed_movimentation_y):
@@ -100,11 +88,8 @@ class Configurator:
             :param speed_movimentation_y: Velocidade de queda
         """
 
-        for i in range(1):
-            shape = LShape(configurator=self,
-                           speed_movimentation_y=speed_movimentation_y,
-                           shape_width=5,
-                           shape_height=3)
+        for i in range(10):
+            shape = LShape(configurator=self, speed_movimentation_y=speed_movimentation_y)
 
             self.shapes.append(shape)
 
@@ -126,7 +111,16 @@ class Configurator:
 
     def put_shape_in_game_matrix(self, shape):
         """
-            Coloca o shape dentro da matriz do jogo.
+            Função para colocar o shape dentro da matriz do jogo.
+
+            Essa função vai transformar a forma em uma matriz através
+            da função draw() da classe Shape.
+
+            Tendo essa matriz gerada percorre-se ela e os números 1 contidos
+            serão adicionados na matriz do jogo para indicar a presença do shape
+            na posição.
+
+            :param shape Shape que vai ser posto dentro da matriz
         """
         shape_matrix = shape.to_matrix()
 
@@ -145,11 +139,23 @@ class Configurator:
                 if shape_matrix[y, x] == 1:
                     self.game_matrix[game_matrix_y][game_matrix_x] = shape_matrix[y, x]
 
-        with np.printoptions(threshold=sys.maxsize):
-            print(shape_matrix)
-            print(self.game_matrix)
+    def shape_fits_game_matrix(self, shape) -> bool:
+        """
+            Essa função retorna se o shape passado por parâmetro cabe
+            na matriz do jogo na posição X e Y em que o shape estiver
+            no momento da chamada.
 
-    def shape_fits_game_matrix(self, shape):
+            Essa função pode ser usada para parar a movimentação automática
+            do eixo Y (que faz o shape cair) e definir shape como locked.
+
+            Os princípios dessa função são os mesmos da função `Configurator.put_shape_in_game_matrix`
+            percorre-se a matriz do shape da mesma forma mas ocorre a soma do valor que há na matriz
+            do jogo com o valor que há na matriz do shape. Essa soma é feita para verificar se já há
+            um shape posicionado naquela posição específica da matriz do jogo.
+
+            :param shape: A peça que deseja verificar.
+        """
+
         shape_matrix = shape.to_matrix()
         int_shape_x = self.__get_shape_position_x_to_matrix(shape)
         int_shape_y = self.__get_shape_position_y_to_matrix(shape)
@@ -174,6 +180,13 @@ class Configurator:
         return True
 
     def __get_shape_position_y_to_matrix(self, shape: Shape) -> int:
+        """
+            Função que pode ser usada para obter a posição Y do shape
+            realizando os devidos tratamentos para garantir que o valor
+            retornado é compatível com uma posição de matriz.
+
+            :param shape: Shape que deseja recuperar a posição Y.
+        """
         max_game_matrix_position_y = self.game_matrix.shape[0] - 1
         shape_position_y = shape.position_y - 1
 
@@ -184,7 +197,15 @@ class Configurator:
 
         return result
 
-    def __get_shape_position_x_to_matrix(self, shape) -> int:
+    def __get_shape_position_x_to_matrix(self, shape: Shape) -> int:
+        """
+            Função que pode ser usada para recuperar a posição X
+            comos devidos tratamentos para garantir que o valor
+            retornado é compatível com uma posição de matriz.
+
+            :param shape: Shape que deseja recuperar a posição X.
+        """
+
         int_shape_x = int(shape.position_x)
 
         if (int_shape_x + shape.shape_width) == self.game_matrix.shape[1]:

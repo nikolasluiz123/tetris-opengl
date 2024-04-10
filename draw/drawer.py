@@ -1,5 +1,3 @@
-import time
-
 import pygame
 from OpenGL.GL import *
 from pygame.locals import *
@@ -18,7 +16,6 @@ class Drawer:
             Construtor para passagem dos parâmetros
 
             :param configurator: Objeto de configuração do jogo.
-            :param shape: Objeto que será movido
         """
 
         self.configurator = configurator
@@ -32,6 +29,10 @@ class Drawer:
             Função principal que realiza a movimentação do objeto
             no eixo Y e permite que o usuário movimente-se no eixo
             X usando as setas.
+
+            Além disso também trata o travamento (lock) do shape
+            caso encoste na borda inferior da tela ou em outra peça
+            que tenha sido posicionada.
         """
 
         for shape in self.configurator.shapes:
@@ -58,17 +59,17 @@ class Drawer:
 
     def execute_actions_on_events(self, shape):
         """
-        Função responsável por tratar os eventos do jogo.
+            Função responsável por tratar os eventos do jogo.
 
-        Eventos:
-            **QUIT** Quando o usuário fecha o jogo. Isso é necessário para que o processo do jogo não trave e que
-            os recursos sejam liberados ao final do processo.
+            Eventos:
+                **QUIT** Quando o usuário fecha o jogo. Isso é necessário para que o processo do jogo não trave e que
+                os recursos sejam liberados ao final do processo.
 
-            **KEYDOWN** Quando o usuário aperta uma tecla. Pode ser usado para tratar a movimentação no eixo X do
-            objeto.
+                **KEYDOWN** Quando o usuário aperta uma tecla. Pode ser usado para tratar a movimentação no eixo X do
+                objeto.
 
-            **KEYUP** Quando o usuário solta uma tecla. Pode ser usado para parar a movimentação no eixo X do
-            objeto.
+                **KEYUP** Quando o usuário solta uma tecla. Pode ser usado para parar a movimentação no eixo X do
+                objeto.
         """
 
         for event in pygame.event.get():
@@ -84,9 +85,9 @@ class Drawer:
 
     def start_rotation(self, event):
         """
-        Função responsável por iniciar a rotação do objeto.
+            Função responsável por iniciar a rotação do objeto.
 
-        :param event: Evento realizado pelo usuário
+            :param event: Evento realizado pelo usuário
         """
 
         if event.key == K_w:
@@ -96,9 +97,9 @@ class Drawer:
 
     def stop_rotation(self, event):
         """
-        Função responsável por parar a rotação do objeto.
+            Função responsável por parar a rotação do objeto.
 
-        :param event: Evento realizado pelo usuário
+            :param event: Evento realizado pelo usuário
         """
 
         if event.key == K_w:
@@ -144,8 +145,9 @@ class Drawer:
             Função responsável por atualizar a posição X e Y baseado na velocidade definida
             no Objeto. É usado um multiplicador para aumentar um pouco a velocidade, isso pode
             ser definido dinamicamente no futuro.
+
+            :param shape: Shape que será movimentado
         """
-        time.sleep(0.1)
         shape.position_x += shape.speed_movimentation_x
         shape.position_y += shape.speed_movimentation_y
 
@@ -160,6 +162,8 @@ class Drawer:
         """
             Função que define até onde o objeto pode se movimentar no eixo X,
             isso garante que o objeto não saia da tela.
+
+            :param shape: Shape que terá seu movimento em X limitado
         """
 
         if shape.position_x < 0:
