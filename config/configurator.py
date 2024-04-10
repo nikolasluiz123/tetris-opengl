@@ -55,9 +55,9 @@ class Configurator:
         """
         speed_movimentation_y = -1
 
+        self.__generate_shapes_square(speed_movimentation_y)
         # self.__generate_shapes_rectangle(speed_movimentation_y)
         self.__generate_shapes_l_shape(speed_movimentation_y)
-        # self.__generate_shapes_square(speed_movimentation_y)
 
         # random.shuffle(self.shapes)
 
@@ -131,10 +131,7 @@ class Configurator:
         shape_matrix = shape.to_matrix()
 
         int_shape_x = self.__get_shape_position_x_to_matrix(shape)
-        if int_shape_x > 0:
-            int_shape_x = int_shape_x - (shape_matrix.shape[1] - 1)
-
-        int_shape_y = self.__get_shape_position_y_to_matrix(shape) - shape_matrix.shape[0]
+        int_shape_y = self.__get_shape_position_y_to_matrix(shape)
 
         for y in range(shape_matrix.shape[0]):
             for x in range(shape_matrix.shape[1]):
@@ -144,9 +141,6 @@ class Configurator:
                     game_matrix_x = int_shape_x + x
 
                 game_matrix_y = int_shape_y + y
-
-                print(f'game_matrix_x = {game_matrix_x} game_matrix_y = {game_matrix_y}')
-                print(f'x = {x} y = {y}')
 
                 if shape_matrix[y, x] == 1:
                     self.game_matrix[game_matrix_y][game_matrix_x] = shape_matrix[y, x]
@@ -160,12 +154,19 @@ class Configurator:
         int_shape_x = self.__get_shape_position_x_to_matrix(shape)
         int_shape_y = self.__get_shape_position_y_to_matrix(shape)
 
-        for y in range(shape_matrix.shape[0] - 1):
-            for x in range(shape_matrix.shape[1] - 1):
-                if int_shape_y == self.game_matrix.shape[0]:
+        for y in range(shape_matrix.shape[0]):
+            for x in range(shape_matrix.shape[1]):
+                if int_shape_x == (self.game_matrix.shape[1] - 1):
+                    game_matrix_x = int_shape_x - x
+                else:
+                    game_matrix_x = int_shape_x + x
+
+                game_matrix_y = int_shape_y + y + 1
+
+                if int_shape_y == (self.game_matrix.shape[0] - 1):
                     return False
 
-                position_value = self.game_matrix[int_shape_y][int_shape_x] + shape_matrix[y, x]
+                position_value = self.game_matrix[game_matrix_y][game_matrix_x] + shape_matrix[y, x]
 
                 if position_value == 2 or shape.position_y <= 0:
                     return False
@@ -176,12 +177,20 @@ class Configurator:
         max_game_matrix_position_y = self.game_matrix.shape[0] - 1
         shape_position_y = shape.position_y - 1
 
-        return max_game_matrix_position_y - shape_position_y
+        result = max_game_matrix_position_y - (shape_position_y + shape.to_matrix().shape[0])
+
+        if result < 0:
+            result = result * -1
+
+        return result
 
     def __get_shape_position_x_to_matrix(self, shape) -> int:
         int_shape_x = int(shape.position_x)
 
         if (int_shape_x + shape.shape_width) == self.game_matrix.shape[1]:
             int_shape_x = self.game_matrix.shape[1] - 1
+
+        if int_shape_x > 0:
+            int_shape_x = int_shape_x - (shape.to_matrix().shape[1] - 1)
 
         return int_shape_x
