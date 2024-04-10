@@ -17,9 +17,9 @@ class Rectangle(Shape):
 
     def draw(self):
         glPushMatrix()
-        glTranslatef(self.position_x + self.shape_width / 2, self.position_y + self.shape_height / 2, 0)
+        glTranslatef(self.position_x + self.shape_width // 2, self.position_y + self.shape_height // 2, 0)
         glRotatef(self.angle, 0, 0, 1)
-        glTranslatef(-self.shape_width / 2, -self.shape_height / 2, 0)
+        glTranslatef(-self.shape_width // 2, -self.shape_height // 2, 0)
 
         glColor3f(1.0, 1.0, 1.0)
         glBegin(GL_QUADS)

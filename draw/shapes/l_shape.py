@@ -17,9 +17,9 @@ class LShape(Shape):
 
     def draw(self):
         glPushMatrix()
-        glTranslatef(self.position_x + self.shape_width / 2, self.position_y + self.shape_height / 2, 0.0)
+        glTranslatef(self.position_x + self.shape_width // 2, self.position_y + self.shape_height // 2, 0.0)
         glRotatef(self.angle, 0.0, 0.0, 1.0)
-        glTranslatef(-self.position_x - self.shape_width / 2, -self.position_y - self.shape_height / 2, 0.0)
+        glTranslatef(-self.position_x - self.shape_width // 2, -self.position_y - self.shape_height // 2, 0.0)
 
         glColor3f(1, 1, 1)
         glBegin(GL_QUADS)

@@ -1,3 +1,4 @@
+import time
 from abc import abstractmethod, ABC
 
 
@@ -39,8 +40,13 @@ class Shape(ABC):
         pass
 
     def rotate(self, clockwise=True):
-        rotation_angle = 5 if clockwise else -5
-        self.angle += rotation_angle
+        rotation_angle = 90 if clockwise else -90
+        new_angle = self.angle + rotation_angle
+
+        if new_angle >= 360.0 or new_angle <= -360.0:
+            self.angle = 0
+        else:
+            self.angle += rotation_angle
 
     @abstractmethod
     def to_matrix(self):

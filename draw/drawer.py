@@ -20,8 +20,6 @@ class Drawer:
 
         self.configurator = configurator
         self.clock = pygame.time.Clock()
-        self.rotate_clockwise = False
-        self.rotate_counter_clockwise = False
         self.__locked_shapes = []
 
     def start_objects_movimentation(self):
@@ -78,34 +76,22 @@ class Drawer:
                 quit()
             elif event.type == KEYDOWN:
                 self.move_object_on_x_axis(event, shape)
-                self.start_rotation(event)
+                self.rotate_shape(event, shape)
             elif event.type == KEYUP:
                 self.stop_object_movimentation_on_x_axis(event, shape)
-                self.stop_rotation(event)
 
-    def start_rotation(self, event):
+    def rotate_shape(self, event, shape):
         """
             Função responsável por iniciar a rotação do objeto.
 
             :param event: Evento realizado pelo usuário
+            :param shape: Shape que será rotacionado
         """
 
-        if event.key == K_w:
-            self.rotate_clockwise = True
-        elif event.key == K_s:
-            self.rotate_counter_clockwise = True
-
-    def stop_rotation(self, event):
-        """
-            Função responsável por parar a rotação do objeto.
-
-            :param event: Evento realizado pelo usuário
-        """
-
-        if event.key == K_w:
-            self.rotate_clockwise = False
-        elif event.key == K_s:
-            self.rotate_counter_clockwise = False
+        if event.key == K_UP:
+            shape.rotate(clockwise=True)
+        elif event.key == K_DOWN:
+            shape.rotate(clockwise=False)
 
     def move_object_on_x_axis(self, event, shape):
         """
@@ -150,11 +136,6 @@ class Drawer:
         """
         shape.position_x += shape.speed_movimentation_x
         shape.position_y += shape.speed_movimentation_y
-
-        if self.rotate_clockwise:
-            shape.rotate(clockwise=True)
-        elif self.rotate_counter_clockwise:
-            shape.rotate(clockwise=False)
 
         self.define_screen_limits_on_x_axis(shape)
 
