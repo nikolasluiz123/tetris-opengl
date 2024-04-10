@@ -51,3 +51,10 @@ class Shape(ABC):
     @abstractmethod
     def to_matrix(self):
         pass
+
+
+class CalculatedDimensionsShape(Shape, ABC):
+
+    @abstractmethod
+    def get_calculated_width(self):
+        pass

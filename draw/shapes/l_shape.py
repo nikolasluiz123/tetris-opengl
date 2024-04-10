@@ -1,10 +1,10 @@
 import numpy as np
 from OpenGL.GL import *
 
-from draw.shapes.shape import Shape
+from draw.shapes.shape import CalculatedDimensionsShape
 
 
-class LShape(Shape):
+class LShape(CalculatedDimensionsShape):
     """
         Classe que representa uma forma em L
     """
@@ -42,6 +42,9 @@ class LShape(Shape):
 
         glPopMatrix()
 
+    def get_calculated_width(self):
+        return self.shape_width // 5
+
     def to_matrix(self):
         """
             Essa função gera uma matriz para representar o Shape em L.
@@ -68,5 +71,13 @@ class LShape(Shape):
 
         matrix_small_part = np.ones((height_small_part, width_small_part), dtype=int)
         matrix[-height_small_part:] = matrix_small_part
+
+        if self.angle != 0:
+            rotation_number = self.angle // 90
+
+            if rotation_number > 0:
+                matrix = np.rot90(matrix, k=rotation_number)
+            else:
+                matrix = np.rot90(matrix, k=(4 + rotation_number))
 
         return matrix

@@ -1,4 +1,5 @@
 import random
+import sys
 
 import numpy as np
 import pygame
@@ -8,7 +9,7 @@ from pygame.locals import *
 
 from draw.shapes.l_shape import LShape
 from draw.shapes.rectangle import Rectangle
-from draw.shapes.shape import Shape
+from draw.shapes.shape import Shape, CalculatedDimensionsShape
 from draw.shapes.square import Square
 
 
@@ -139,6 +140,10 @@ class Configurator:
                 if shape_matrix[y, x] == 1:
                     self.game_matrix[game_matrix_y][game_matrix_x] = shape_matrix[y, x]
 
+        # with np.printoptions(threshold=sys.maxsize):
+            # print(shape_matrix)
+            # print(self.game_matrix)
+
     def shape_fits_game_matrix(self, shape) -> bool:
         """
             Essa função retorna se o shape passado por parâmetro cabe
@@ -169,12 +174,12 @@ class Configurator:
 
                 game_matrix_y = int_shape_y + y + 1
 
-                if int_shape_y == (self.game_matrix.shape[0] - 1):
+                if game_matrix_y == self.game_matrix.shape[0] - 1:
                     return False
 
                 position_value = self.game_matrix[game_matrix_y][game_matrix_x] + shape_matrix[y, x]
 
-                if position_value == 2 or shape.position_y <= 0:
+                if position_value == 2:
                     return False
 
         return True
@@ -191,6 +196,14 @@ class Configurator:
         shape_position_y = shape.position_y - 1
 
         result = max_game_matrix_position_y - (shape_position_y + shape.to_matrix().shape[0])
+
+        is_shape_rotated = shape.angle % 180 != 0
+        not_equals_dimensions = shape.shape_height != shape.shape_width
+
+        if isinstance(shape, CalculatedDimensionsShape) and is_shape_rotated and not_equals_dimensions:
+            result += shape.get_calculated_width()
+        elif is_shape_rotated and not_equals_dimensions:
+            result -= shape.shape_width // 2
 
         if result < 0:
             result = result * -1

@@ -12,8 +12,8 @@ class Rectangle(Shape):
     def __init__(self, configurator, speed_movimentation_y: float):
         super().__init__(configurator,
                          speed_movimentation_y,
-                         int(configurator.screen_width * 0.1),
-                         int(configurator.screen_height * 0.1))
+                         int(configurator.screen_width * 0.05),
+                         int(configurator.screen_height * 0.05))
 
     def draw(self):
         glPushMatrix()
@@ -36,4 +36,9 @@ class Rectangle(Shape):
             Essa função cria uma matriz com 1 para representar o retângulo,
             sendo a ordem dessa matriz baseado nas proporções do shape.
         """
-        return np.ones((self.shape_height, self.shape_width), dtype=int)
+        matrix = np.ones((self.shape_height, self.shape_width), dtype=int)
+
+        if self.angle % 180 != 0:
+            matrix = matrix.T
+
+        return matrix
