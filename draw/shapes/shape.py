@@ -40,6 +40,22 @@ class Shape(ABC):
         pass
 
     def rotate(self, clockwise=True):
+        """
+            Função responsável por realizar a rotação do shape.
+
+            A rotação pode ser no sentido horário ou anti-horário, dependendo do valor do parâmetro clockwise.
+            Se a rotação é no sentido horário é preciso incrementar o ângulo com valores positivos, caso a rotação
+            for no sentido anti-horário deve ser incrementado valores negativos.
+
+            Sempre incrementamos 90 graus (positivos ou negativos) para que a peça faça rotações de forma mais rápida
+            e direta como ocorre no jogo mesmo.
+
+            Quando o ângulo chegar em 360 (positivos ou negativos) zeramos a variável pois significa que a peça já
+            voltou para a posição inicial.
+
+            :param clockwise: Indica se a rotação é no sentido horário (true) ou anti-horário (false)
+        """
+
         rotation_angle = 90 if clockwise else -90
         new_angle = self.angle + rotation_angle
 
@@ -48,13 +64,32 @@ class Shape(ABC):
         else:
             self.angle += rotation_angle
 
+    def is_rotated(self) -> bool:
+        """
+            Função reponsável por retornar se houve alguma rotação.
+        """
+        return self.angle != 0
+
     @abstractmethod
     def to_matrix(self):
+        """
+            Função que deve transformar o shape em uma matriz
+        """
         pass
 
 
 class CalculatedDimensionsShape(Shape, ABC):
+    """
+        Classe para representar shapes que sejam de formatos um pouco mais complexos.
+
+        Algumas das peças do tétris são formadas por duas ou maisformas básicas, normalmente retângulos.
+        Para manter o padrão de passarmos somente altura e largura como parâmetro quando temos esses shapes mais
+        complexos são realizados cálculos para obter dimensões.
+    """
 
     @abstractmethod
     def get_calculated_width(self):
+        """
+            Função responsável por retornar a largura calculada do shape.
+        """
         pass

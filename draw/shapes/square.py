@@ -12,8 +12,8 @@ class Square(Shape):
     def __init__(self, configurator, speed_movimentation_y: float):
         super().__init__(configurator,
                          speed_movimentation_y,
-                         int(configurator.screen_width * 0.1),
-                         int(configurator.screen_height * 0.05))
+                         int(configurator.screen_width * 0.08),
+                         int(configurator.screen_height * 0.04))
 
     def draw(self):
         glPushMatrix()
@@ -35,5 +35,8 @@ class Square(Shape):
         """
             Essa função cria uma matriz com 1 para representar o quadrado,
             sendo a ordem dessa matriz baseado nas proporções do shape.
+
+            Nesse caso como se trata de um quadrado, não precisamos nos preocupar
+            com o ângulo de rotação pois todos os lados são iguais.
         """
         return np.ones((self.shape_height, self.shape_width), dtype=int)

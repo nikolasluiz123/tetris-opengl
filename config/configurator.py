@@ -140,10 +140,6 @@ class Configurator:
                 if shape_matrix[y, x] == 1:
                     self.game_matrix[game_matrix_y][game_matrix_x] = shape_matrix[y, x]
 
-        # with np.printoptions(threshold=sys.maxsize):
-            # print(shape_matrix)
-            # print(self.game_matrix)
-
     def shape_fits_game_matrix(self, shape) -> bool:
         """
             Essa função retorna se o shape passado por parâmetro cabe
@@ -196,13 +192,11 @@ class Configurator:
         shape_position_y = shape.position_y - 1
 
         result = max_game_matrix_position_y - (shape_position_y + shape.to_matrix().shape[0])
-
-        is_shape_rotated = shape.angle % 180 != 0
         not_equals_dimensions = shape.shape_height != shape.shape_width
 
-        if isinstance(shape, CalculatedDimensionsShape) and is_shape_rotated and not_equals_dimensions:
+        if isinstance(shape, CalculatedDimensionsShape) and shape.is_rotated() and not_equals_dimensions:
             result += shape.get_calculated_width()
-        elif is_shape_rotated and not_equals_dimensions:
+        elif shape.is_rotated() and not_equals_dimensions:
             result -= shape.shape_width // 2
 
         if result < 0:
@@ -228,3 +222,37 @@ class Configurator:
             int_shape_x = int_shape_x - (shape.to_matrix().shape[1] - 1)
 
         return int_shape_x
+
+    def define_screen_limits_on_x_axis(self, shape):
+        """
+            Função que define até onde o objeto pode se movimentar no eixo X,
+            isso garante que o objeto não saia da tela.
+
+            :param shape: Shape que terá seu movimento em X limitado
+        """
+        not_equals_dimensions = shape.shape_height != shape.shape_width
+
+        if shape.is_rotated():
+            if isinstance(shape, CalculatedDimensionsShape) and not_equals_dimensions:
+                dimensions_diff = abs(shape.get_calculated_width() - shape.shape_height)
+                shape_position_x = shape.position_x - dimensions_diff
+
+                if shape_position_x < 0:
+                    shape.position_x = dimensions_diff
+
+            elif not_equals_dimensions:
+                dimensions_diff = abs(shape.shape_width - shape.shape_height + (abs(shape.shape_width - shape.shape_height) // 2))
+                shape_position_x = shape.position_x - dimensions_diff
+
+                screen_width = (self.screen_width + (abs(shape.shape_width - shape.shape_height) // 2))
+
+                if shape_position_x < 0:
+                    shape.position_x = dimensions_diff
+                elif (shape.position_x + shape.shape_height) > screen_width:
+                    shape.position_x = screen_width - shape.shape_height
+        else:
+            if shape.position_x < 0:
+                shape.position_x = 0
+            elif shape.position_x + shape.shape_width > self.screen_width:
+                shape.position_x = self.screen_width - shape.shape_width
+

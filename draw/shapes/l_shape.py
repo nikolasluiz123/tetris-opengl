@@ -72,7 +72,7 @@ class LShape(CalculatedDimensionsShape):
         matrix_small_part = np.ones((height_small_part, width_small_part), dtype=int)
         matrix[-height_small_part:] = matrix_small_part
 
-        if self.angle != 0:
+        if self.is_rotated():
             rotation_number = self.angle // 90
 
             if rotation_number > 0:

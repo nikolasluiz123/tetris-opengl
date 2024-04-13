@@ -35,6 +35,13 @@ class Rectangle(Shape):
         """
             Essa função cria uma matriz com 1 para representar o retângulo,
             sendo a ordem dessa matriz baseado nas proporções do shape.
+
+            Se por acaso houve alguma rotação que fez o retângulo ficar em um ângulo
+            que a divisão por 180 graus não é zero quer dizer que precisamos mudar a matriz.
+
+            O shape começa com os graus zerados, se o usuário rotacionar uma vez
+            vamos ter 90 graus (positivos ou negativos) isso quer dizer que se o shape
+            estava na vertical, agora está na horizontal e devemos representar isso na matriz.
         """
         matrix = np.ones((self.shape_height, self.shape_width), dtype=int)
 

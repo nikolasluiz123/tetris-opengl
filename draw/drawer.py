@@ -1,3 +1,5 @@
+import time
+
 import pygame
 from OpenGL.GL import *
 from pygame.locals import *
@@ -137,17 +139,4 @@ class Drawer:
         shape.position_x += shape.speed_movimentation_x
         shape.position_y += shape.speed_movimentation_y
 
-        self.define_screen_limits_on_x_axis(shape)
-
-    def define_screen_limits_on_x_axis(self, shape):
-        """
-            Função que define até onde o objeto pode se movimentar no eixo X,
-            isso garante que o objeto não saia da tela.
-
-            :param shape: Shape que terá seu movimento em X limitado
-        """
-
-        if shape.position_x < 0:
-            shape.position_x = 0
-        elif shape.position_x + shape.shape_width > self.configurator.screen_width:
-            shape.position_x = self.configurator.screen_width - shape.shape_width
+        self.configurator.define_screen_limits_on_x_axis(shape)
