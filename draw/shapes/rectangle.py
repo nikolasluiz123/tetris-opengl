@@ -49,3 +49,6 @@ class Rectangle(Shape):
             matrix = matrix.T
 
         return matrix
+
+    def get_dimensions_diff(self) -> int:
+        return abs(self.shape_width - self.shape_height + (abs(self.shape_width - self.shape_height) // 2))

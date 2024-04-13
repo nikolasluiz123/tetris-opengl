@@ -81,3 +81,6 @@ class LShape(CalculatedDimensionsShape):
                 matrix = np.rot90(matrix, k=(4 + rotation_number))
 
         return matrix
+
+    def get_dimensions_diff(self) -> int:
+        return abs(self.get_calculated_width() - self.shape_height)

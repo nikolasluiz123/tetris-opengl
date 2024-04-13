@@ -55,9 +55,9 @@ class Configurator:
         """
         speed_movimentation_y = -1
 
-        self.__generate_shapes_square(speed_movimentation_y)
+        # self.__generate_shapes_square(speed_movimentation_y)
         self.__generate_shapes_rectangle(speed_movimentation_y)
-        self.__generate_shapes_l_shape(speed_movimentation_y)
+        # self.__generate_shapes_l_shape(speed_movimentation_y)
 
         random.shuffle(self.shapes)
 
@@ -67,7 +67,7 @@ class Configurator:
 
             :param speed_movimentation_y: Velocidade de queda
         """
-        for i in range(10):
+        for i in range(30):
             shape = Rectangle(configurator=self, speed_movimentation_y=speed_movimentation_y)
             self.shapes.append(shape)
 
@@ -139,6 +139,10 @@ class Configurator:
 
                 if shape_matrix[y, x] == 1:
                     self.game_matrix[game_matrix_y][game_matrix_x] = shape_matrix[y, x]
+
+        with np.printoptions(threshold=sys.maxsize, linewidth=1000):
+            print(self.game_matrix)
+        # print(shape_matrix)
 
     def shape_fits_game_matrix(self, shape) -> bool:
         """
@@ -215,7 +219,14 @@ class Configurator:
 
         int_shape_x = int(shape.position_x)
 
-        if (int_shape_x + shape.shape_width) == self.game_matrix.shape[1]:
+        if shape.is_rotated():
+            int_shape_x_without_dimension_diff = int_shape_x - shape.get_dimensions_diff()
+
+            if int_shape_x_without_dimension_diff == 0:
+                int_shape_x -= shape.get_dimensions_diff()
+            elif (int_shape_x_without_dimension_diff + shape.shape_height) == self.game_matrix.shape[1]:
+                int_shape_x = self.game_matrix.shape[1] - 1
+        elif (int_shape_x + shape.shape_width) == self.game_matrix.shape[1]:
             int_shape_x = self.game_matrix.shape[1] - 1
 
         if int_shape_x > 0:
@@ -234,20 +245,18 @@ class Configurator:
 
         if shape.is_rotated():
             if isinstance(shape, CalculatedDimensionsShape) and not_equals_dimensions:
-                dimensions_diff = abs(shape.get_calculated_width() - shape.shape_height)
-                shape_position_x = shape.position_x - dimensions_diff
+                shape_position_x = shape.position_x - shape.get_dimensions_diff()
 
                 if shape_position_x < 0:
-                    shape.position_x = dimensions_diff
+                    shape.position_x = shape.get_dimensions_diff()
 
             elif not_equals_dimensions:
-                dimensions_diff = abs(shape.shape_width - shape.shape_height + (abs(shape.shape_width - shape.shape_height) // 2))
-                shape_position_x = shape.position_x - dimensions_diff
+                shape_position_x = shape.position_x - shape.get_dimensions_diff()
 
                 screen_width = (self.screen_width + (abs(shape.shape_width - shape.shape_height) // 2))
 
                 if shape_position_x < 0:
-                    shape.position_x = dimensions_diff
+                    shape.position_x = shape.get_dimensions_diff()
                 elif (shape.position_x + shape.shape_height) > screen_width:
                     shape.position_x = screen_width - shape.shape_height
         else:
@@ -255,4 +264,3 @@ class Configurator:
                 shape.position_x = 0
             elif shape.position_x + shape.shape_width > self.screen_width:
                 shape.position_x = self.screen_width - shape.shape_width
-

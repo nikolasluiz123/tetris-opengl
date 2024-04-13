@@ -136,7 +136,7 @@ class Drawer:
 
             :param shape: Shape que será movimentado
         """
-        shape.position_x += shape.speed_movimentation_x
-        shape.position_y += shape.speed_movimentation_y
+        shape.position_x += shape.speed_movimentation_x * 2
+        shape.position_y += shape.speed_movimentation_y * 2
 
         self.configurator.define_screen_limits_on_x_axis(shape)

@@ -77,6 +77,10 @@ class Shape(ABC):
         """
         pass
 
+    @abstractmethod
+    def get_dimensions_diff(self) -> int:
+        pass
+
 
 class CalculatedDimensionsShape(Shape, ABC):
     """
