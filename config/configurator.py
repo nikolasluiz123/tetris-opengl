@@ -244,10 +244,12 @@ class Configurator:
 
         if shape.is_rotated():
             if isinstance(shape, CalculatedDimensionsShape) and not_equals_dimensions:
-                shape_position_x = shape.position_x - shape.get_dimensions_diff()
+                shape_position_x = shape.position_x - shape.get_calculated_width()
 
                 if shape_position_x < 0:
-                    shape.position_x = shape.get_dimensions_diff()
+                    shape.position_x = shape.get_calculated_width()
+                elif (shape.position_x + shape.get_calculated_width() + 15) > self.screen_width:
+                    shape.position_x = (self.screen_width - shape.get_calculated_width()) - 15
 
             elif not_equals_dimensions:
                 shape_position_x = shape.position_x - shape.get_dimensions_diff()
@@ -261,5 +263,5 @@ class Configurator:
         else:
             if shape.position_x < 0:
                 shape.position_x = 0
-            elif shape.position_x + shape.shape_width > self.screen_width:
+            elif (shape.position_x + shape.shape_width) > self.screen_width:
                 shape.position_x = self.screen_width - shape.shape_width

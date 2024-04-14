@@ -15,6 +15,8 @@ class LShape(CalculatedDimensionsShape):
                          int(configurator.screen_width * 0.12),
                          int(configurator.screen_height * 0.04))
 
+        self.configurator = configurator
+
     def draw(self):
         glPushMatrix()
         glTranslatef(self.position_x + self.shape_width // 2, self.position_y + self.shape_height // 2, 0.0)
@@ -43,14 +45,24 @@ class LShape(CalculatedDimensionsShape):
         glPopMatrix()
 
     def get_calculated_width(self):
-        if abs(self.angle) == 0:
-            return self.shape_width // 5
-        elif abs(self.angle) == 90:
-            return self.shape_width // 2
-        elif abs(self.angle) == 180:
-            return self.shape_width // 5
-        elif abs(self.angle) == 270:
-            return self.shape_width // 5
+        if True:
+            if abs(self.angle) == 0:
+                return self.shape_width // 5
+            elif abs(self.angle) == 90:
+                return self.shape_width // 2
+            elif abs(self.angle) == 180:
+                return 0
+            elif abs(self.angle) == 270:
+                return -7
+        else:
+            if abs(self.angle) == 0:
+                return self.shape_width // 5
+            elif abs(self.angle) == 90:
+                return self.shape_width // 2
+            elif abs(self.angle) == 180:
+                return (self.shape_width // 2) + (self.shape_width // 5)
+            elif abs(self.angle) == 270:
+                return (self.shape_height * 2) - (self.shape_height // 3)
 
     def get_calculated_height(self):
         if abs(self.angle) == 0:
