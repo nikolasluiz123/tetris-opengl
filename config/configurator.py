@@ -56,8 +56,8 @@ class Configurator:
         speed_movimentation_y = -1
 
         # self.__generate_shapes_square(speed_movimentation_y)
-        self.__generate_shapes_rectangle(speed_movimentation_y)
-        # self.__generate_shapes_l_shape(speed_movimentation_y)
+        # self.__generate_shapes_rectangle(speed_movimentation_y)
+        self.__generate_shapes_l_shape(speed_movimentation_y)
 
         random.shuffle(self.shapes)
 
@@ -67,7 +67,7 @@ class Configurator:
 
             :param speed_movimentation_y: Velocidade de queda
         """
-        for i in range(30):
+        for i in range(1):
             shape = Rectangle(configurator=self, speed_movimentation_y=speed_movimentation_y)
             self.shapes.append(shape)
 
@@ -78,7 +78,7 @@ class Configurator:
             :param speed_movimentation_y: Velocidade de queda
         """
 
-        for i in range(10):
+        for i in range(1):
             shape = Square(configurator=self, speed_movimentation_y=speed_movimentation_y)
             self.shapes.append(shape)
 
@@ -89,7 +89,7 @@ class Configurator:
             :param speed_movimentation_y: Velocidade de queda
         """
 
-        for i in range(10):
+        for i in range(1):
             shape = LShape(configurator=self, speed_movimentation_y=speed_movimentation_y)
 
             self.shapes.append(shape)
@@ -140,9 +140,8 @@ class Configurator:
                 if shape_matrix[y, x] == 1:
                     self.game_matrix[game_matrix_y][game_matrix_x] = shape_matrix[y, x]
 
-        with np.printoptions(threshold=sys.maxsize, linewidth=1000):
-            print(self.game_matrix)
-        # print(shape_matrix)
+        # with np.printoptions(threshold=sys.maxsize, linewidth=1000):
+        #     print(self.game_matrix)
 
     def shape_fits_game_matrix(self, shape) -> bool:
         """
@@ -199,7 +198,7 @@ class Configurator:
         not_equals_dimensions = shape.shape_height != shape.shape_width
 
         if isinstance(shape, CalculatedDimensionsShape) and shape.is_rotated() and not_equals_dimensions:
-            result += shape.get_calculated_width()
+            result += shape.get_calculated_height()
         elif shape.is_rotated() and not_equals_dimensions:
             result -= shape.shape_width // 2
 

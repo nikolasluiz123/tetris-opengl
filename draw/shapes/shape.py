@@ -97,3 +97,10 @@ class CalculatedDimensionsShape(Shape, ABC):
             Função responsável por retornar a largura calculada do shape.
         """
         pass
+
+    @abstractmethod
+    def get_calculated_height(self):
+        """
+            Função responsável por retornar a altura calculada do shape.
+        """
+        pass

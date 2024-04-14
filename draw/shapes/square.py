@@ -40,3 +40,6 @@ class Square(Shape):
             com o ângulo de rotação pois todos os lados são iguais.
         """
         return np.ones((self.shape_height, self.shape_width), dtype=int)
+
+    def get_dimensions_diff(self) -> int:
+        return 0

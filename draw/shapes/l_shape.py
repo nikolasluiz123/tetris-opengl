@@ -43,7 +43,24 @@ class LShape(CalculatedDimensionsShape):
         glPopMatrix()
 
     def get_calculated_width(self):
-        return self.shape_width // 5
+        if abs(self.angle) == 0:
+            return self.shape_width // 5
+        elif abs(self.angle) == 90:
+            return self.shape_width // 2
+        elif abs(self.angle) == 180:
+            return self.shape_width // 5
+        elif abs(self.angle) == 270:
+            return self.shape_width // 5
+
+    def get_calculated_height(self):
+        if abs(self.angle) == 0:
+            return self.shape_height * 2
+        elif abs(self.angle) == 90:
+            return self.shape_width // 5
+        elif abs(self.angle) == 180:
+            return self.shape_height
+        elif abs(self.angle) == 270:
+            return self.shape_height // 3
 
     def to_matrix(self):
         """
@@ -83,4 +100,4 @@ class LShape(CalculatedDimensionsShape):
         return matrix
 
     def get_dimensions_diff(self) -> int:
-        return abs(self.get_calculated_width() - self.shape_height)
+        return abs(self.get_calculated_width() - self.get_calculated_height())
