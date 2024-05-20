@@ -23,5 +23,15 @@ peça e colocar nas respectivas linhas e colunas na matriz do jogo.
 Nas configurações padrões do jogo nossa matrix é de ordem 20x10, ou seja,
 ela possui 20 linhas e 10 colunas.
 
-### Aplicação de Álgebra Linear
+### Aplicação de Transformação Linear
+
+Ao realizar a rotação das peças em nosso jogo o que ocorre matematicamente é 
+a rotação do vetor bidimensional em um angulo de 90 graus. Isso é feito através
+de uma matriz de rotação que pode ser representado da seguinte forma:
+
+![img.png](img.png)
+
+Portanto, a rotação de um vetor bidimensional é um exemplo de transformação
+linear, onde a matriz de rotação atua sobre o vetor.
+
 
